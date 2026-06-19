@@ -1,0 +1,40 @@
+=== 华为门店验收工具 — Mac 打包说明 ===
+
+【要求环境】
+- macOS 系统（Intel 或 Apple Silicon 均可）
+- Python 3.10 ~ 3.12（推荐 3.11）
+- 已安装 pip
+
+【打包步骤】（终端里运行）
+
+# 1. 进入本文件夹
+cd /path/to/MAC打包
+
+# 2. 安装依赖（只需第一次运行）
+pip3 install -r requirements.txt
+
+# 3. 执行打包（生成 .app）
+pyinstaller mac_build.spec
+
+# 4. 打包完成后，在 dist/ 目录下找到：
+#    "华为门店验收工具.app"
+#    把整个 .app 发给勇哥即可
+
+【注意事项】
+- 首次运行 .app 时，Mac 可能提示"无法验证开发者"
+  解决方法：系统设置 → 隐私与安全性 → 滚动到最下面 → 点"仍要打开"
+- license.dat 不会打包进去，Mac 用户第一次运行会提示未授权
+  需要单独生成授权文件（联系勇哥）
+- settings.json 也不会打包，首次运行自动生成默认配置
+
+【文件清单】
+- photo_report_gui手机版.py  主程序
+- mac_build.spec                打包配置
+- requirements.txt              依赖列表
+- 单页模版.pptx                PPT模板
+- 装饰底图.jpg                  幻灯片装饰图
+- issues_db.json                问题描述词条库
+- remedies_db.json              整改意见词条库
+
+【问题联系】
+王柱勇 13945079480
