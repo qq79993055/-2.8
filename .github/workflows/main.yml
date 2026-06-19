@@ -1,0 +1,18 @@
+name: Build macOS App
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: pyinstaller mac_build.spec
+      - run: cd dist && zip -r ../mac-app.zip "华为门店验收工具.app"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mac-app
+          path: mac-app.zip
