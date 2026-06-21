@@ -1,18 +1,39 @@
-name: Build macOS App
+name: 构建macOS应用
+
+# 并发控制，避免任务堆积排队
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# 手动触发
 on:
   workflow_dispatch:
+
 jobs:
-  build:
+  构建:
     runs-on: macos-13
+    # 设置3小时超时，不再死等24小时被取消
+    timeout-minutes: 180
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Python 3.11
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - run: pyinstaller mac_build.spec
-      - run: cd dist && zip -r ../mac-app.zip "华为门店验收工具.app"
-      - uses: actions/upload-artifact@v4
+          python-version: "3.11"
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: PyInstaller 打包
+        run: pyinstaller mac_build.spec
+
+      - name: 压缩 APP 为 zip
+        run: cd dist && zip -r ../mac-app.zip "华为门店验收工具.app"
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
         with:
-          name: mac-app
+          name: Mac-App
           path: mac-app.zip
